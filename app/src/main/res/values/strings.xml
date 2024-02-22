@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Kukaj</string>
+    <string name="browse_title">Kukaj</string>
+    <string name="related_movies">Related Videos</string>
+    <string name="grid_view">Grid View</string>
+    <string name="error_fragment">Error Fragment</string>
+    <string name="personal_settings">Personal Settings</string>
+    <string name="watch">pustiť</string>
+    <string name="maintenance">technická údržba</string>
+    <string name="movie">Movie</string>
+
+    <!-- Error messages -->
+    <string name="browse_error_message">Nepodarilo sa načítať videá</string>
+    <string name="detail_error_message">Nepodarilo sa načítať video</string>
+    <string name="error_retry_action">Skúsiť znovu</string>
+    <string name="error_home_action">Úvodná stránka</string>
+</resources>
