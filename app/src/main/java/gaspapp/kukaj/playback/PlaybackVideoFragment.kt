@@ -56,7 +56,6 @@ class PlaybackVideoFragment : VideoSupportFragment() {
         mTransportControlGlue.playWhenPrepared()
 
         try {
-            Log.d("video", liveStream.videoUrl.toString())
             playerAdapter.setDataSource(Uri.parse(liveStream.videoUrl))
 
             val category: CategoryModel? = Repository.getCategoryStore().fingByLiveStreamId(liveStream.id)
@@ -73,9 +72,9 @@ class PlaybackVideoFragment : VideoSupportFragment() {
                     val rowsAdapter = ArrayObjectAdapter(presenterSelector)
                     rowsAdapter.add(mTransportControlGlue.controlsRow)
 
-
-                    val listRowAdapter = ArrayObjectAdapter(CardPresenter())
-                    val header = HeaderItem(liveStreamCategory!!.category.title)
+                    val cardPresenter = CardPresenter(context!!.applicationContext.resources.displayMetrics)
+                    val listRowAdapter = ArrayObjectAdapter(cardPresenter)
+                    val header = HeaderItem(liveStreamCategory.category.title)
                     for (item in liveStreamCategory.liveStreamList) {
                         listRowAdapter.add(item)
                     }
@@ -87,7 +86,7 @@ class PlaybackVideoFragment : VideoSupportFragment() {
                 }
             }
         } catch (ex: Exception) {
-            Log.e("PLayback", ex.toString())
+            Log.e("Playback", ex.toString())
             Toast.makeText(context, "Nepodarilo sa načítať video", Toast.LENGTH_LONG).show()
         }
     }

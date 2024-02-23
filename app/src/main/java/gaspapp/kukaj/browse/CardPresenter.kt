@@ -2,6 +2,9 @@ package gaspapp.kukaj.browse
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
+import android.content.Context
+import android.text.style.LineHeightSpan.WithDensity
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -10,6 +13,7 @@ import androidx.leanback.widget.Presenter
 import com.bumptech.glide.Glide
 import gaspapp.kukaj.R
 import gaspapp.kukaj.model.LiveStream
+import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
 
@@ -17,7 +21,7 @@ import kotlin.properties.Delegates
  * A CardPresenter is used to generate Views and bind Objects to them on demand.
  * It contains an ImageCardView.
  */
-class CardPresenter : Presenter() {
+class CardPresenter(private val displayMetrics: DisplayMetrics) : Presenter() {
     private var sSelectedBackgroundColor: Int by Delegates.notNull()
     private var sDefaultBackgroundColor: Int by Delegates.notNull()
 
@@ -46,8 +50,10 @@ class CardPresenter : Presenter() {
 
         Log.d("card", liveStream.id.toString())
         if (liveStream.cardImageUrl != null) {
+            val width = convertDpToPixel(displayMetrics, CARD_WIDTH)
+            val height = convertDpToPixel(displayMetrics, CARD_HEIGHT)
             cardView.titleText = liveStream.title
-            cardView.setMainImageDimensions(CARD_WIDTH, CARD_HEIGHT)
+            cardView.setMainImageDimensions(width, height)
             Glide.with(viewHolder.view.context)
                     .load(liveStream.cardImageUrl)
                     .centerCrop()
@@ -79,10 +85,15 @@ class CardPresenter : Presenter() {
         colorAnimation.start()
     }
 
+    private fun convertDpToPixel(displayMetrics: DisplayMetrics, dp: Int): Int {
+        val density = displayMetrics.density
+        return (dp.toFloat() * density).roundToInt()
+    }
+
     companion object {
         private val TAG = "CardPresenter"
 
-        private val CARD_WIDTH = 300
-        private val CARD_HEIGHT = 200
+        private val CARD_WIDTH = 150
+        private val CARD_HEIGHT = 100
     }
 }

@@ -97,7 +97,7 @@ class MainFragment : BrowseSupportFragment(), StoreSelector<List<LiveStreamCateg
     }
 
     private fun generateLeanbackRowList(list: List<LiveStreamCategory>): List<ListRow> {
-        val cardPresenter = CardPresenter()
+        val cardPresenter = CardPresenter(context!!.applicationContext.resources.displayMetrics)
         var leanbackRowList: List<ListRow> = LinkedList()
 
         for (group in list) {

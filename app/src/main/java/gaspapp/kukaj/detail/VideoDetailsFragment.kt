@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.Gravity
-import android.widget.ProgressBar
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.leanback.app.DetailsSupportFragment
@@ -38,6 +37,7 @@ import gaspapp.kukaj.SpinnerFragment
 import gaspapp.kukaj.model.LiveStream
 import gaspapp.kukaj.store.StoreSelector
 import jp.wasabeef.glide.transformations.MaskTransformation
+import kotlin.math.roundToInt
 
 
 /**
@@ -72,7 +72,8 @@ class VideoDetailsFragment : DetailsSupportFragment(), StoreSelector<List<LiveSt
                 .beginTransaction()
                 .add(R.id.details_fragment, spinnerFragment)
                 .commit()
-            Repository.getLiveStreamStore().loadDetail(liveStream!!, { _ ->
+            Repository.getLiveStreamStore().loadDetail(
+                liveStream, { _ ->
                     fragmentManager!!
                         .beginTransaction()
                         .remove(spinnerFragment)
@@ -200,7 +201,7 @@ class VideoDetailsFragment : DetailsSupportFragment(), StoreSelector<List<LiveSt
 
     private fun convertDpToPixel(context: Context, dp: Int): Int {
         val density = context.applicationContext.resources.displayMetrics.density
-        return Math.round(dp.toFloat() * density)
+        return (dp.toFloat() * density).roundToInt()
     }
 
     private inner class ItemViewClickedListener : OnItemViewClickedListener {
@@ -226,12 +227,10 @@ class VideoDetailsFragment : DetailsSupportFragment(), StoreSelector<List<LiveSt
     }
 
     companion object {
-        private val TAG = "VideoDetailsFragment"
+        private const val ACTION_WATCH = 1L
+        private const val ACTION_MAINTENANCE = 2L
 
-        private val ACTION_WATCH = 1L
-        private val ACTION_MAINTENANCE = 2L
-
-        private val DETAIL_THUMB_WIDTH = 500
-        private val DETAIL_THUMB_HEIGHT = 333
+        private const val DETAIL_THUMB_WIDTH = 500
+        private const val DETAIL_THUMB_HEIGHT = 333
     }
 }
