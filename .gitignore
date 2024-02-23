@@ -19,6 +19,7 @@ local.properties
 
 # Android Studio generated files and folders
 *.apk
+*.aab
 output.json
 
 # Google Services (e.g. APIs or Firebase)
