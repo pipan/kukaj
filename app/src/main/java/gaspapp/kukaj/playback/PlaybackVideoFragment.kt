@@ -31,14 +31,14 @@ import gaspapp.kukaj.browse.CardPresenter
 import gaspapp.kukaj.detail.DetailsActivity
 import gaspapp.kukaj.model.CategoryModel
 import gaspapp.kukaj.model.LiveStream
-import gaspapp.kukaj.store.SingleLiveStreamCateogryStore
+import gaspapp.kukaj.store.SingleLiveStreamCategoryStore
 
 
 /** Handles video playback with media controls. */
 class PlaybackVideoFragment : VideoSupportFragment() {
 
     private lateinit var mTransportControlGlue: PlaybackTransportControlGlue<MediaPlayerAdapter>
-    private var singleLiveStreamCategoryStore: SingleLiveStreamCateogryStore? = null
+    private var singleLiveStreamCategoryStore: SingleLiveStreamCategoryStore? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,11 +58,10 @@ class PlaybackVideoFragment : VideoSupportFragment() {
         try {
             playerAdapter.setDataSource(Uri.parse(liveStream.videoUrl))
 
-            val category: CategoryModel? = Repository.getCategoryStore().fingByLiveStreamId(liveStream.id)
+            val category: CategoryModel? = Repository.getCategoryStore().findByLiveStreamId(liveStream.id)
             if (category != null) {
-                this.singleLiveStreamCategoryStore = SingleLiveStreamCateogryStore(Repository.getLiveStreamCategoryStore(), category.id)
+                this.singleLiveStreamCategoryStore = SingleLiveStreamCategoryStore(Repository.getLiveStreamCategoryStore(), category.id)
                 this.singleLiveStreamCategoryStore!!.subscribeAndUpdate { liveStreamCategory ->
-                    Log.d("category", liveStreamCategory!!.category.title.toString())
                     val presenterSelector = ClassPresenterSelector()
                     presenterSelector.addClassPresenter(
                         mTransportControlGlue.controlsRow.javaClass,
@@ -74,9 +73,11 @@ class PlaybackVideoFragment : VideoSupportFragment() {
 
                     val cardPresenter = CardPresenter(context!!.applicationContext.resources.displayMetrics)
                     val listRowAdapter = ArrayObjectAdapter(cardPresenter)
-                    val header = HeaderItem(liveStreamCategory.category.title)
-                    for (item in liveStreamCategory.liveStreamList) {
-                        listRowAdapter.add(item)
+                    val header = HeaderItem(liveStreamCategory?.category?.title ?: "Podobné")
+                    if (liveStreamCategory != null) {
+                        for (item in liveStreamCategory.liveStreamList) {
+                            listRowAdapter.add(item)
+                        }
                     }
                     if (listRowAdapter.size() > 0) {
                         rowsAdapter.add(ListRow(header, listRowAdapter))
@@ -113,7 +114,10 @@ class PlaybackVideoFragment : VideoSupportFragment() {
 
     override fun onDestroyView() {
         view!!.keepScreenOn = false
-        this.singleLiveStreamCategoryStore!!.unsubscribeAll()
+        if (this.singleLiveStreamCategoryStore != null) {
+            this.singleLiveStreamCategoryStore!!.unsubscribeAll()
+        }
+
         super.onDestroyView()
     }
 

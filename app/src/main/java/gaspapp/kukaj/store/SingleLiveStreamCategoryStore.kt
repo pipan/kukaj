@@ -3,7 +3,7 @@ package gaspapp.kukaj.store
 import gaspapp.kukaj.model.LiveStreamCategory
 import java.io.Closeable
 
-class SingleLiveStreamCateogryStore(
+class SingleLiveStreamCategoryStore(
     private val liveStreamCategoryStore: LiveStreamCategoryStore,
     private val id: String) : Store<LiveStreamCategory?>(null), StoreSelector<List<LiveStreamCategory>>, Closeable {
 
