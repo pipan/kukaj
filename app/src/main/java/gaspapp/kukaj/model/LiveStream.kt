@@ -40,6 +40,9 @@ data class LiveStream(
             if (detailUrl.equals("")) {
                 return null
             }
+            if (!detailUrl.matches(Regex("^https?://(www.)?kukaj.sk/.*"))) {
+                return null
+            }
             val id = detailUrl.split("/").last().split("-").first().toLong()
             return LiveStream(id, title, shortDescription, "", backgroundImageUrl, thumbnailImageUrl, detailUrl, "")
         }
