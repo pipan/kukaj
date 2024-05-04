@@ -31,17 +31,17 @@ class LiveStreamCategoryStore(
             return
         }
         var liveStreamCategoryList: List<LiveStreamCategory> = ArrayList()
-        var inCategory: List<Long> = LinkedList()
-        var otherCategory: CategoryModel? = null
+//        var inCategory: List<Long> = LinkedList()
+//        var otherCategory: CategoryModel? = null
         for (category in this.categoryList!!) {
-            if (category.id == "OTHER") {
-                otherCategory = category
-            }
-            inCategory = inCategory + category.streamIdList
+//            if (category.id == "OTHER") {
+//                otherCategory = category
+//            }
+//            inCategory = inCategory + category.streamIdList
 
             var items: List<LiveStream> = ArrayList()
             for (item in this.liveStreamList!!) {
-                if (!category.streamIdList.contains(item.id)) {
+                if (!category.categorizer.matches(item)) {
                     continue
                 }
                 items = items + item
@@ -51,16 +51,16 @@ class LiveStreamCategoryStore(
             }
         }
 
-        var items: List<LiveStream> = ArrayList()
-        for (item in this.liveStreamList!!) {
-            if (inCategory.contains(item.id)) {
-                continue
-            }
-            items = items + item
-        }
-        if (items.isNotEmpty() && otherCategory != null) {
-            liveStreamCategoryList = liveStreamCategoryList + LiveStreamCategory(otherCategory, items)
-        }
+//        var items: List<LiveStream> = ArrayList()
+//        for (item in this.liveStreamList!!) {
+//            if (inCategory.contains(item.id)) {
+//                continue
+//            }
+//            items = items + item
+//        }
+//        if (items.isNotEmpty() && otherCategory != null) {
+//            liveStreamCategoryList = liveStreamCategoryList + LiveStreamCategory(otherCategory, items)
+//        }
         this.update(liveStreamCategoryList)
     }
 }

@@ -33,8 +33,10 @@ import gaspapp.kukaj.browse.MainActivity
 import gaspapp.kukaj.playback.PlaybackActivity
 import gaspapp.kukaj.R
 import gaspapp.kukaj.Repository
+import gaspapp.kukaj.Services
 import gaspapp.kukaj.SpinnerFragment
 import gaspapp.kukaj.model.LiveStream
+import gaspapp.kukaj.source.LiveStreamSource
 import gaspapp.kukaj.store.StoreSelector
 import jp.wasabeef.glide.transformations.MaskTransformation
 import kotlin.math.roundToInt
@@ -72,17 +74,20 @@ class VideoDetailsFragment : DetailsSupportFragment(), StoreSelector<List<LiveSt
                 .beginTransaction()
                 .add(R.id.details_fragment, spinnerFragment)
                 .commit()
-            Repository.getLiveStreamStore().loadDetail(
-                liveStream, { _ ->
+            val source: LiveStreamSource? = Services.getSourceService().getHandler(liveStream.detailUrl)
+            if (source != null) {
+                source.getDetailLoader().load(liveStream, { _ ->
                     fragmentManager!!
                         .beginTransaction()
                         .remove(spinnerFragment)
                         .commit()
-                },
-                { _ ->
-                    val intent = Intent(context!!, DetailErrorActivity::class.java)
-                    startActivity(intent)
-                })
+                    }, { _ ->
+                        val intent = Intent(context!!, DetailErrorActivity::class.java)
+                        startActivity(intent)
+                    })
+            } else {
+                // todo: what to do if no source is found? snackbar? error? log?
+            }
         } else {
             val intent = Intent(context!!, MainActivity::class.java)
             startActivity(intent)
@@ -100,7 +105,7 @@ class VideoDetailsFragment : DetailsSupportFragment(), StoreSelector<List<LiveSt
     }
 
     override fun onStoreUpdate(value: List<LiveStream>) {
-        val liveStream = value.find { i -> i.id == mSelectedStream!!.id }
+        val liveStream = value.find { i -> i.detailUrl == mSelectedStream!!.detailUrl }
         this.setSelectedStream(liveStream)
     }
 

@@ -48,7 +48,6 @@ class CardPresenter(private val displayMetrics: DisplayMetrics) : Presenter() {
         val liveStream = item as LiveStream
         val cardView = viewHolder.view as ImageCardView
 
-        Log.d("card", liveStream.id.toString())
         if (liveStream.cardImageUrl != null) {
             val width = convertDpToPixel(displayMetrics, CARD_WIDTH)
             val height = convertDpToPixel(displayMetrics, CARD_HEIGHT)

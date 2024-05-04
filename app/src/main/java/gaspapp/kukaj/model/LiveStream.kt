@@ -4,20 +4,18 @@ import org.jsoup.nodes.Element
 import java.io.Serializable
 
 data class LiveStream(
-    var id: Long = 0,
     var title: String? = null,
     var shortDescription: String? = null,
     var description: String? = null,
     var backgroundImageUrl: String? = null,
     var cardImageUrl: String? = null,
-    var detailUrl: String? = null,
+    var detailUrl: String = "",
     var videoUrl: String? = null,
     var isInMaintenance: Boolean = false
 ) : Serializable {
 
     override fun toString(): String {
         return "LiveStream{" +
-                "id=" + id +
                 ", title='" + title + '\'' +
                 ", shortDescription='" + shortDescription + '\'' +
                 ", description='" + description + '\'' +
@@ -40,11 +38,8 @@ data class LiveStream(
             if (detailUrl.equals("")) {
                 return null
             }
-            if (!detailUrl.matches(Regex("^https?://(www.)?kukaj.sk/.*"))) {
-                return null
-            }
-            val id = detailUrl.split("/").last().split("-").first().toLong()
-            return LiveStream(id, title, shortDescription, "", backgroundImageUrl, thumbnailImageUrl, detailUrl, "")
+
+            return LiveStream(title, shortDescription, "", backgroundImageUrl, thumbnailImageUrl, detailUrl, "")
         }
     }
 }

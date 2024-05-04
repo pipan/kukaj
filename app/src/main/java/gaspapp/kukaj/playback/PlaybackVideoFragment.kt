@@ -58,7 +58,7 @@ class PlaybackVideoFragment : VideoSupportFragment() {
         try {
             playerAdapter.setDataSource(Uri.parse(liveStream.videoUrl))
 
-            val category: CategoryModel? = Repository.getCategoryStore().findByLiveStreamId(liveStream.id)
+            val category: CategoryModel? = Repository.getCategoryStore().findByLiveStream(liveStream)
             if (category != null) {
                 this.singleLiveStreamCategoryStore = SingleLiveStreamCategoryStore(Repository.getLiveStreamCategoryStore(), category.id)
                 this.singleLiveStreamCategoryStore!!.subscribeAndUpdate { liveStreamCategory ->

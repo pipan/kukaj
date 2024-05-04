@@ -19,6 +19,7 @@ import android.view.Gravity
 import android.widget.Toast
 import gaspapp.kukaj.R
 import gaspapp.kukaj.Repository
+import gaspapp.kukaj.Services
 import gaspapp.kukaj.SpinnerFragment
 import gaspapp.kukaj.detail.DetailsActivity
 import gaspapp.kukaj.model.LiveStream
@@ -80,13 +81,12 @@ class MainFragment : BrowseSupportFragment(), StoreSelector<List<LiveStreamCateg
             .add(R.id.main_browse_fragment, spinnerFragment)
             .commit()
 
-        Repository.getLiveStreamStore().loadList({ _ ->
+        Services.getListLoader().load({ _ ->
                 fragmentManager!!
                     .beginTransaction()
                     .remove(spinnerFragment)
                     .commit()
-            },
-            { _ ->
+            }, { _ ->
                 val intent = Intent(context!!, BrowseErrorActivity::class.java)
                 startActivity(intent)
             })
