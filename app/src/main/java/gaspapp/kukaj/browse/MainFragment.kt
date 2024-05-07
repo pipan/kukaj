@@ -14,7 +14,6 @@ import androidx.leanback.widget.Row
 import androidx.leanback.widget.RowPresenter
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
-import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
 import gaspapp.kukaj.R
@@ -53,12 +52,7 @@ class MainFragment : BrowseSupportFragment(), StoreSelector<List<LiveStreamCateg
     }
 
     override fun onStoreUpdate(value: List<LiveStreamCategory>) {
-//        Log.d()
-//        val rowsAdapter = ArrayObjectAdapter(ListRowPresenter())
         adapter.setItems(this.generateLeanbackRowList(value), BrowseDiffCallback())
-//        adapter.notifyItemRangeChanged(0, adapter.size())
-
-//        adapter = rowsAdapter
         if (selectedPosition == -1) {
             selectedPosition = 0
         }

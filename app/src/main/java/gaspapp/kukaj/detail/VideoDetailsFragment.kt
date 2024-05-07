@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
@@ -81,7 +82,8 @@ class VideoDetailsFragment : DetailsSupportFragment(), StoreSelector<List<LiveSt
                         .beginTransaction()
                         .remove(spinnerFragment)
                         .commit()
-                    }, { _ ->
+                    }, { errorResponse ->
+                        Log.e("http", errorResponse.toString())
                         val intent = Intent(context!!, DetailErrorActivity::class.java)
                         startActivity(intent)
                     })

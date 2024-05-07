@@ -1,8 +1,5 @@
 package gaspapp.kukaj
 
-import android.content.Context
-import com.android.volley.RequestQueue
-import com.android.volley.toolbox.Volley
 import gaspapp.kukaj.store.CategoryStore
 import gaspapp.kukaj.store.LiveStreamCategoryStore
 import gaspapp.kukaj.store.LiveStreamStore
