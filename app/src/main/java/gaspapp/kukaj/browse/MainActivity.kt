@@ -54,6 +54,7 @@ class MainActivity : FragmentActivity() {
                     Repository.getCategoryStore().setCategories(json)
 
                     applicationContext.openFileOutput(CATEGORIES_CACHE_FILENAME, Context.MODE_PRIVATE).use {
+                        Log.d("json", json.toString())
                         it.write(json.toString().toByteArray())
                     }
                 } catch (ex: Exception) {

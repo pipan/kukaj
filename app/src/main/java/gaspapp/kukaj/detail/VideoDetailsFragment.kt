@@ -88,7 +88,9 @@ class VideoDetailsFragment : DetailsSupportFragment(), StoreSelector<List<LiveSt
                         startActivity(intent)
                     })
             } else {
-                // todo: what to do if no source is found? snackbar? error? log?
+                Log.e("liveStreamSource", "unknown source ${liveStream.detailUrl}")
+                val intent = Intent(context!!, DetailErrorActivity::class.java)
+                startActivity(intent)
             }
         } else {
             val intent = Intent(context!!, MainActivity::class.java)
