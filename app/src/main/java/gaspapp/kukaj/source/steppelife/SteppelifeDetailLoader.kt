@@ -36,7 +36,7 @@ class SteppelifeDetailLoader(
                 }
                 liveStream.description = descriptionParagraphs.joinToString(System.lineSeparator() + System.lineSeparator())
 
-                val videoPlayerUrl = detailDocument.select(".avs-player iframe").attr("src")
+                val videoPlayerUrl = detailDocument.select(".yendif-player iframe").attr("src")
                 this.loadPlayer(videoPlayerUrl, liveStream, responseListener, errorListener)
             },
             errorListener)
@@ -49,15 +49,8 @@ class SteppelifeDetailLoader(
             Request.Method.GET, videoPlayerUrl,
             { playerResponse ->
                 val playerDocument: Document = Jsoup.parse(playerResponse.toString())
-                val hls = this.findHls(playerDocument)
-                if (hls == null) {
-                    liveStream.isInMaintenance = true
-                    errorListener.onErrorResponse(VolleyError("hls value not found"))
-                    return@StringRequest
-                }
-
-                liveStream.videoUrl = hls
-                liveStream.isInMaintenance = false
+                liveStream.videoUrl = playerDocument.select("body video-js source").attr("src")
+                liveStream.isInMaintenance = liveStream.videoUrl == ""
 
                 this.liveStreamStore.updateItem(liveStream)
                 responseListener.onResponse(playerResponse)
