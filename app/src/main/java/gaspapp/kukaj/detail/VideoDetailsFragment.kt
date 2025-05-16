@@ -203,6 +203,7 @@ class VideoDetailsFragment : DetailsSupportFragment(), StoreSelector<List<LiveSt
                 val intent = Intent(context!!, PlaybackActivity::class.java)
                 intent.putExtra(DetailsActivity.MOVIE, mSelectedStream)
                 startActivity(intent)
+                activity!!.finish()
             }
         }
         mPresenterSelector.addClassPresenter(DetailsOverviewRow::class.java, detailsPresenter)
