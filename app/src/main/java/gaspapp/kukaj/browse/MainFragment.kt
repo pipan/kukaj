@@ -32,6 +32,7 @@ import java.util.LinkedList
 class MainFragment : BrowseSupportFragment(), StoreSelector<List<LiveStreamCategory>> {
     private val adapter: ArrayObjectAdapter = ArrayObjectAdapter(ListRowPresenter())
 
+    @Deprecated("")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -48,7 +49,7 @@ class MainFragment : BrowseSupportFragment(), StoreSelector<List<LiveStreamCateg
 
     override fun onResume() {
         super.onResume()
-        Repository.getLiveStreamCategoryStore().subscribe(this)
+//        Repository.getLiveStreamCategoryStore().subscribe(this)
     }
 
     override fun onStoreUpdate(value: List<LiveStreamCategory>) {
