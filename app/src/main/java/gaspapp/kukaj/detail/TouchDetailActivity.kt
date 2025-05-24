@@ -7,6 +7,8 @@ import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.View
+import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.widget.VideoView
 import androidx.activity.ComponentActivity
@@ -45,6 +47,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import gaspapp.kukaj.Repository
 import gaspapp.kukaj.Services
 import gaspapp.kukaj.error.TouchErrorActivity
@@ -74,6 +78,8 @@ class TouchDetailActivity : ComponentActivity() {
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 window.attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
             }
