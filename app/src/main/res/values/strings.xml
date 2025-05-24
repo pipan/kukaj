@@ -16,4 +16,5 @@
     <string name="error_home_action">Úvodná stránka</string>
     <string name="title_activity_touch_main">TouchMainActivity</string>
     <string name="title_activity_touch_detail">TouchDetailActivity</string>
+    <string name="title_activity_touch_error">TouchErrorActivity</string>
 </resources>
