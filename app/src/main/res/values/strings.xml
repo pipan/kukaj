@@ -14,7 +14,4 @@
     <string name="detail_error_message">Nepodarilo sa načítať video</string>
     <string name="error_retry_action">Skúsiť znovu</string>
     <string name="error_home_action">Úvodná stránka</string>
-    <string name="title_activity_touch_main">TouchMainActivity</string>
-    <string name="title_activity_touch_detail">TouchDetailActivity</string>
-    <string name="title_activity_touch_error">TouchErrorActivity</string>
 </resources>

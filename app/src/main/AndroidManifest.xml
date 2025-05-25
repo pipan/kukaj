@@ -23,7 +23,6 @@
         <activity
             android:name=".error.TouchErrorActivity"
             android:exported="false"
-            android:label="@string/title_activity_touch_error"
             android:theme="@style/Theme.Kukaj" />
         <activity
             android:name=".detail.TouchDetailActivity"
@@ -44,7 +43,8 @@
             android:banner="@drawable/kukaj_banner"
             android:exported="true"
             android:icon="@mipmap/ic_launcher_icon"
-            android:logo="@mipmap/ic_launcher_icon">
+            android:logo="@mipmap/ic_launcher_icon"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,8 +56,7 @@
             android:exported="false" />
         <activity
             android:name=".playback.PlaybackActivity"
-            android:exported="false"
-            android:screenOrientation="landscape" />
+            android:exported="false"/>
         <activity
             android:name=".browse.BrowseErrorActivity"
             android:exported="false" />

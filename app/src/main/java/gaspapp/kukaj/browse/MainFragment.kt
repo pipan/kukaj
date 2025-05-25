@@ -49,7 +49,7 @@ class MainFragment : BrowseSupportFragment(), StoreSelector<List<LiveStreamCateg
 
     override fun onResume() {
         super.onResume()
-//        Repository.getLiveStreamCategoryStore().subscribe(this)
+        Repository.getLiveStreamCategoryStore().subscribe(this)
     }
 
     override fun onStoreUpdate(value: List<LiveStreamCategory>) {
