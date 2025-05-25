@@ -11,6 +11,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -211,7 +212,9 @@ class TouchMainActivity : ComponentActivity() {
                     itemsIndexed(streamListState) { index, item ->
                         Card(
                             colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.surface
+                                containerColor = MaterialTheme.colorScheme.surface,
+                                contentColor = MaterialTheme.colorScheme.onSurface,
+
                             ),
                             modifier = Modifier.fillMaxWidth(),
                             onClick = {
@@ -220,20 +223,43 @@ class TouchMainActivity : ComponentActivity() {
                                 startActivity(intent)
                             }
                         ) {
-                            AsyncImage(
-                                source = item.backgroundImageUrl!!,
-                                description = item.title!!,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .aspectRatio(16F / 9F)
-                            )
-                            Text(
-                                color = MaterialTheme.colorScheme.onSurface,
-                                modifier = Modifier.padding(12.dp),
-                                text = item.title!!,
-                                fontSize = 4.em,
-                                lineHeight = 1.3.em
-                            )
+
+                            BoxWithConstraints {
+                                if (maxWidth < 600.dp) {
+                                    Column {
+                                        AsyncImage(
+                                            source = item.backgroundImageUrl!!,
+                                            description = item.title!!,
+                                            modifier = Modifier
+                                                .fillMaxSize()
+                                                .aspectRatio(16F / 9F)
+                                        )
+                                        Text(
+                                            modifier = Modifier.padding(12.dp),
+                                            text = item.title!!,
+                                            fontSize = 4.em,
+                                            lineHeight = 1.3.em
+                                        )
+                                    }
+                                } else {
+                                    Row {
+                                        AsyncImage(
+                                            source = item.backgroundImageUrl!!,
+                                            description = item.title!!,
+                                            modifier = Modifier
+                                                .width(250.dp)
+                                                .aspectRatio(16F / 9F)
+                                        )
+                                        Text(
+                                            modifier = Modifier.padding(12.dp),
+                                            text = item.title!!,
+                                            fontSize = 4.em,
+                                            lineHeight = 1.3.em
+                                        )
+                                    }
+                                }
+                            }
+
                         }
                     }
                 }
