@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace = "gaspapp.kukaj"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "gaspapp.kukaj"
         minSdk = 26
-        targetSdk = 34
-        versionCode = 10
-        versionName = "1.1.0"
+        targetSdk = 35
+        versionCode = 11
+        versionName = "1.1.1"
         vectorDrawables {
             useSupportLibrary = true
         }
