@@ -142,12 +142,12 @@ class TouchMainActivity : ComponentActivity() {
                     contentDescription = "logo",
                     contentScale = ContentScale.Fit,
                     modifier = Modifier.width(180.dp)
-                        .padding(12.dp)
+                        .padding(top = 30.dp, end = 12.dp, bottom = 0.dp, start = 12.dp)
                         .clickable { openWeb() }
                 )
                 LazyRow(
                     modifier = Modifier.fillMaxWidth()
-                        .padding(start = 12.dp, end = 12.dp),
+                        .padding(horizontal = 12.dp, vertical = 12.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     state = rememberLazyListState(),
                 ) {
