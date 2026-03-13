@@ -32,6 +32,7 @@ import java.util.LinkedList
 class MainFragment : BrowseSupportFragment(), StoreSelector<List<LiveStreamCategory>> {
     private val adapter: ArrayObjectAdapter = ArrayObjectAdapter(ListRowPresenter())
 
+    @Deprecated("")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 

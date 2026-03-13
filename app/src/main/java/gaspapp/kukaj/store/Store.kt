@@ -5,11 +5,11 @@ import java.util.LinkedList
 open class Store<T>(private var value: T) {
     private var selectors: List<StoreSelector<T>> = LinkedList()
 
-    fun subscribe(selector: StoreSelector<T>) {
-        if (this.selectors.contains(selector)) {
-            return
+    fun subscribe(selector: StoreSelector<T>): Subscription<T> {
+        if (!this.selectors.contains(selector)) {
+            this.selectors = this.selectors + selector
         }
-        this.selectors = this.selectors + selector
+        return Subscription(this, selector)
     }
 
     fun subscribeAndUpdate(selector: StoreSelector<T>) {
