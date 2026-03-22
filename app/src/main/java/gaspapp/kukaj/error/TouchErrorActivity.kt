@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -34,6 +36,8 @@ class TouchErrorActivity : ComponentActivity() {
                         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.fillMaxWidth()
+                            .statusBarsPadding()
+                            .navigationBarsPadding()
                     ) {
                         Text(
                             text = "Chyba",

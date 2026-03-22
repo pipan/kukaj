@@ -17,7 +17,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -136,13 +138,16 @@ class TouchMainActivity : ComponentActivity() {
         val loadingState = remember { this.loading }
 
         Box() {
-            Column {
+            Column(
+                modifier = Modifier.statusBarsPadding()
+                    .navigationBarsPadding()
+            ) {
                 Image(
                     painter = painterResource(id = R.drawable.kukaj_badge),
                     contentDescription = "logo",
                     contentScale = ContentScale.Fit,
                     modifier = Modifier.width(180.dp)
-                        .padding(top = 30.dp, end = 12.dp, bottom = 0.dp, start = 12.dp)
+                        .padding(top = 12.dp, end = 12.dp, bottom = 0.dp, start = 12.dp)
                         .clickable { openWeb() }
                 )
                 LazyRow(

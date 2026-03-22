@@ -1,13 +1,12 @@
 package gaspapp.kukaj.detail
 
-import android.R
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.View
+import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.widget.VideoView
@@ -37,7 +36,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -48,7 +46,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import gaspapp.kukaj.Repository
 import gaspapp.kukaj.Services
 import gaspapp.kukaj.error.TouchErrorActivity
@@ -71,19 +68,23 @@ class TouchDetailActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+            actionBar?.hide()
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+            } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                window.insetsController?.apply {
+                    hide(WindowInsets.Type.statusBars())
+                    systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                }
+            }
+        }
+
         streamSubscription = Repository.getLiveStreamStore().subscribe { value ->
             liveStream.value = value.find { item -> item.detailUrl == streamIntentData.detailUrl }
         }
 
-        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                window.attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
-            }
-        }
         this.streamIntentData = intent.getSerializableExtra(DetailsActivity.MOVIE) as LiveStream? ?: return openError()
         val source: LiveStreamSource = Services.getSourceService().getHandler(streamIntentData.detailUrl)
             ?: return openError()
