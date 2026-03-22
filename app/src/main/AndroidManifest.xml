@@ -34,7 +34,6 @@
             android:theme="@style/Theme.Kukaj">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -43,11 +42,9 @@
             android:banner="@drawable/kukaj_banner"
             android:exported="true"
             android:icon="@mipmap/ic_launcher_icon"
-            android:logo="@mipmap/ic_launcher_icon"
-            android:screenOrientation="landscape">
+            android:logo="@mipmap/ic_launcher_icon">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
