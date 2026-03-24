@@ -1,17 +1,20 @@
 package gaspapp.kukaj.detail
 
+import android.app.PictureInPictureParams
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
+import android.util.Rational
 import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.widget.VideoView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.rememberTransformableState
@@ -187,6 +190,10 @@ class TouchDetailActivity : ComponentActivity() {
         val intent = Intent(applicationContext, TouchErrorActivity::class.java)
         startActivity(intent)
         finishAffinity()
+    }
+    
+    override fun onUserLeaveHint() {
+        enterPictureInPictureMode(PictureInPictureParams.Builder().build())
     }
 
     private fun loadDetail(source: LiveStreamSource) {
