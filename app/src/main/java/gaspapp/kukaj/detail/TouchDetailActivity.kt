@@ -192,6 +192,7 @@ class TouchDetailActivity : ComponentActivity() {
         finishAffinity()
     }
     
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onUserLeaveHint() {
         enterPictureInPictureMode(PictureInPictureParams.Builder().build())
     }
