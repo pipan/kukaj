@@ -25,8 +25,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -97,8 +99,13 @@ class TouchDetailActivity : ComponentActivity() {
         setContent {
             KukajTheme {
                 val isLandscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
+                var surfaceModifier = Modifier.fillMaxSize()
+                if (!isLandscape) {
+                    surfaceModifier = surfaceModifier.statusBarsPadding()
+                        .navigationBarsPadding()
+                }
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = surfaceModifier,
                     color = if (isLandscape) Color(0xFF000000) else MaterialTheme.colorScheme.background
                 ) {
                     Column {
