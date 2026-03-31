@@ -55,7 +55,6 @@ dependencies {
     implementation("org.jsoup:jsoup:1.17.2")
     implementation("jp.wasabeef:glide-transformations:4.3.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.13.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
