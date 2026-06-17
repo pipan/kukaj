@@ -9,7 +9,7 @@ open class Store<T>(private var value: T) {
         if (!this.selectors.contains(selector)) {
             this.selectors = this.selectors + selector
         }
-        return Subscription(this, selector)
+        return StoreSubscription(this, selector)
     }
 
     fun subscribeAndUpdate(selector: StoreSelector<T>) {
