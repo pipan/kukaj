@@ -6,11 +6,16 @@ import gaspapp.kukaj.store.LiveStreamStore
 
 class Repository {
     companion object {
+        private var isInit = false
         private lateinit var liveStreamStore: LiveStreamStore
         private lateinit var categoryStore: CategoryStore
         private lateinit var liveStreamCategoryStore: LiveStreamCategoryStore
 
         fun init() {
+            if (this.isInit) {
+                return
+            }
+            this.isInit = true
             this.liveStreamStore = LiveStreamStore()
             this.categoryStore = CategoryStore()
             this.liveStreamCategoryStore = LiveStreamCategoryStore(this.liveStreamStore, this.categoryStore)

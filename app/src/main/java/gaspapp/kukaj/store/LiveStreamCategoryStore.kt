@@ -59,8 +59,10 @@ class LiveStreamCategoryStore(
                 }
             }, { error ->
                 Log.w("json", error)
-                Log.w("json", error.networkResponse.statusCode.toString())
-                Log.w("json", error.networkResponse.data.decodeToString())
+                if (error != null) {
+                    Log.w("json", error.networkResponse.statusCode.toString())
+                    Log.w("json", error.networkResponse.data.decodeToString())
+                }
             })
         request.setRetryPolicy(DefaultRetryPolicy(6000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
         Services.getHttpQueue().add(request)
@@ -80,14 +82,7 @@ class LiveStreamCategoryStore(
             return
         }
         var liveStreamCategoryList: List<LiveStreamCategory> = ArrayList()
-//        var inCategory: List<Long> = LinkedList()
-//        var otherCategory: CategoryModel? = null
         for (category in this.categoryList!!) {
-//            if (category.id == "OTHER") {
-//                otherCategory = category
-//            }
-//            inCategory = inCategory + category.streamIdList
-
             var items: List<LiveStream> = ArrayList()
             for (item in this.liveStreamList!!) {
                 if (!category.categorizer.matches(item)) {
@@ -99,17 +94,6 @@ class LiveStreamCategoryStore(
                 liveStreamCategoryList = liveStreamCategoryList + LiveStreamCategory(category, items)
             }
         }
-
-//        var items: List<LiveStream> = ArrayList()
-//        for (item in this.liveStreamList!!) {
-//            if (inCategory.contains(item.id)) {
-//                continue
-//            }
-//            items = items + item
-//        }
-//        if (items.isNotEmpty() && otherCategory != null) {
-//            liveStreamCategoryList = liveStreamCategoryList + LiveStreamCategory(otherCategory, items)
-//        }
         this.update(liveStreamCategoryList)
     }
     companion object {

@@ -56,6 +56,9 @@ class VideoDetailsFragment : DetailsSupportFragment(), StoreSelector<List<LiveSt
     private lateinit var mAdapter: ArrayObjectAdapter
     private var actionAdapter: ArrayObjectAdapter = ArrayObjectAdapter()
 
+    private var fragmentCommitSave: (() -> Unit)? = null
+    private var isPaused = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mDetailsBackground = DetailsSupportFragmentBackgroundController(this)
@@ -71,22 +74,26 @@ class VideoDetailsFragment : DetailsSupportFragment(), StoreSelector<List<LiveSt
 
             this.setSelectedStream(liveStream)
             val spinnerFragment = SpinnerFragment(Gravity.BOTTOM.xor(Gravity.CENTER_HORIZONTAL))
-            fragmentManager!!
-                .beginTransaction()
-                .add(R.id.details_fragment, spinnerFragment)
-                .commit()
+            this.commitFragment {
+                fragmentManager!!
+                    .beginTransaction()
+                    .add(R.id.details_fragment, spinnerFragment)
+                    .commit()
+            }
             val source: LiveStreamSource? = Services.getSourceService().getHandler(liveStream.detailUrl)
             if (source != null) {
                 source.getDetailLoader().load(liveStream, { _ ->
-                    fragmentManager!!
-                        .beginTransaction()
-                        .remove(spinnerFragment)
-                        .commit()
-                    }, { errorResponse ->
-                        Log.e("http", errorResponse.toString())
-                        val intent = Intent(context!!, DetailErrorActivity::class.java)
-                        startActivity(intent)
-                    })
+                    this.commitFragment {
+                        fragmentManager!!
+                            .beginTransaction()
+                            .remove(spinnerFragment)
+                            .commit()
+                    }
+                }, { errorResponse ->
+                    Log.e("http", errorResponse.toString())
+                    val intent = Intent(context!!, DetailErrorActivity::class.java)
+                    startActivity(intent)
+                })
             } else {
                 Log.e("liveStreamSource", "unknown source ${liveStream.detailUrl}")
                 val intent = Intent(context!!, DetailErrorActivity::class.java)
@@ -98,7 +105,16 @@ class VideoDetailsFragment : DetailsSupportFragment(), StoreSelector<List<LiveSt
         }
     }
 
+    private fun commitFragment(action: () -> Unit) {
+        if (this.isPaused) {
+            this.fragmentCommitSave = action
+        } else {
+            action.invoke()
+        }
+    }
+
     override fun onPause() {
+        this.isPaused = true
         Repository.getLiveStreamStore().unsubscribe(this)
         super.onPause()
     }
@@ -106,6 +122,11 @@ class VideoDetailsFragment : DetailsSupportFragment(), StoreSelector<List<LiveSt
     override fun onResume() {
         super.onResume()
         Repository.getLiveStreamStore().subscribe(this)
+        this.isPaused = false
+        if (this.fragmentCommitSave != null) {
+            this.fragmentCommitSave!!.invoke()
+            this.fragmentCommitSave = null
+        }
     }
 
     override fun onStoreUpdate(value: List<LiveStream>) {

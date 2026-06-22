@@ -74,10 +74,8 @@ class TouchMainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (savedInstanceState == null) {
-            Repository.init()
-            Services.init(applicationContext)
-        }
+        Repository.init()
+        Services.init(applicationContext)
         this.categorySubscription = Repository.getLiveStreamCategoryStore().subscribe { value ->
             categoryList.clear();
             categoryList.addAll(value);

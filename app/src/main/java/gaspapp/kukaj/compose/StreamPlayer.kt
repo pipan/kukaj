@@ -34,7 +34,6 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-@SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun StreamPlayer(
@@ -93,8 +92,12 @@ fun StreamPlayer(
 
     if (!fullscreen) {
         val revDragValue = 1f - dragState.floatValue
-        val scaleValue by derivedStateOf { revDragValue + dragState.floatValue / 2 }
-        val translationValue by derivedStateOf {  dragState.floatValue * displaySize.height }
+        val scaleValue by remember {
+            derivedStateOf { revDragValue + dragState.floatValue / 2 }
+        }
+        val translationValue by remember {
+            derivedStateOf {  dragState.floatValue * displaySize.height }
+        }
         val animateScale: Float by animateFloatAsState(scaleValue,
             label = "video scale"
         )
