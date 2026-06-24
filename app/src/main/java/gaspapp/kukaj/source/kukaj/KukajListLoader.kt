@@ -35,7 +35,7 @@ class KukajListLoader(
                 Log.e("httpError", error.toString())
                 errorListener.onErrorResponse(error)
             })
-        request.setRetryPolicy(DefaultRetryPolicy(6000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
+        request.setRetryPolicy(DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
         this.httpQueue.add(request)
     }
 }

@@ -92,7 +92,7 @@ fun StreamPlayer(
 
     if (!fullscreen) {
         val revDragValue = 1f - dragState.floatValue
-        val scaleValue by remember {
+        val scaleValue by remember(revDragValue) {
             derivedStateOf { revDragValue + dragState.floatValue / 2 }
         }
         val translationValue by remember {

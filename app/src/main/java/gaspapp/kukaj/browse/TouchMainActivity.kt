@@ -36,9 +36,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
@@ -50,6 +53,7 @@ import androidx.compose.ui.unit.em
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import gaspapp.kukaj.R
 import gaspapp.kukaj.Repository
@@ -114,10 +118,12 @@ class TouchMainActivity : ComponentActivity() {
     }
 
     private fun loadList() {
+        loading.value = true
         hasError.value = false
         Services.getListLoader().load({ _ ->
             loading.value = false
         }, { _ ->
+            loading.value = false
             hasError.value = true
         })
     }
@@ -137,19 +143,22 @@ class TouchMainActivity : ComponentActivity() {
 
         Box() {
             Column(
-                modifier = Modifier.statusBarsPadding()
+                modifier = Modifier
+                    .statusBarsPadding()
                     .navigationBarsPadding()
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.kukaj_badge),
                     contentDescription = "logo",
                     contentScale = ContentScale.Fit,
-                    modifier = Modifier.width(180.dp)
+                    modifier = Modifier
+                        .width(180.dp)
                         .padding(top = 12.dp, end = 12.dp, bottom = 0.dp, start = 12.dp)
                         .clickable { openWeb() }
                 )
                 LazyRow(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .padding(horizontal = 12.dp, vertical = 12.dp),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     state = rememberLazyListState(),
@@ -181,7 +190,8 @@ class TouchMainActivity : ComponentActivity() {
                     Row(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                             .aspectRatio(16F / 9F)
                     ) {
                         CircularProgressIndicator(
@@ -195,7 +205,8 @@ class TouchMainActivity : ComponentActivity() {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                             .aspectRatio(16F / 9F)
                     ) {
                         Text(text = "Chyba pri načítaní zoznamu")
@@ -207,7 +218,8 @@ class TouchMainActivity : ComponentActivity() {
                     }
                 }
                 LazyColumn(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .padding(horizontal = 12.dp),
                     state = rememberLazyListState(),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -276,33 +288,47 @@ class TouchMainActivity : ComponentActivity() {
         description: String,
         modifier: Modifier
     ) {
-        val resource = remember { mutableStateOf<ImageBitmap?>(null) }
+        var resource by remember(source) { mutableStateOf<ImageBitmap?>(null) }
 
-        Glide.with(this)
-            .asBitmap()
-            .load(source)
-            .diskCacheStrategy(DiskCacheStrategy.DATA)
-            .into(object: CustomTarget<Bitmap> () {
-                override fun onLoadCleared(placeholder: Drawable?) {
-                    resource.value = null
+        var target: Target<Bitmap>? = null
+        val glideLoader by remember(source) {
+            derivedStateOf {
+                if (target != null) {
+                    Glide.with(this).clear(target)
                 }
+                Glide.with(this)
+                    .asBitmap()
+                    .load(source)
+                    .diskCacheStrategy(DiskCacheStrategy.DATA)
+                    .into(object: CustomTarget<Bitmap> () {
+                        override fun onLoadCleared(placeholder: Drawable?) {
+                            resource = null
+                        }
 
-                override fun onResourceReady(
-                    bitmapResource: Bitmap,
-                    transition: Transition<in Bitmap>?
-                ) {
-                    resource.value = bitmapResource.asImageBitmap()
-                }
-            })
-        if (resource.value == null) {
-            return
+                        override fun onResourceReady(
+                            bitmapResource: Bitmap,
+                            transition: Transition<in Bitmap>?
+                        ) {
+                            resource = bitmapResource.asImageBitmap()
+                        }
+                    })
+            }
         }
-        Image(
-            bitmap = resource.value!!,
-            contentDescription = description,
-            contentScale = ContentScale.FillWidth,
-            modifier = modifier
-        )
+        target = glideLoader
+
+        if (resource == null) {
+            Box(
+                modifier = modifier
+            )
+        } else {
+            Image(
+                bitmap = resource!!,
+                contentDescription = description,
+                contentScale = ContentScale.FillWidth,
+                modifier = modifier
+            )
+        }
+
     }
 }
 
