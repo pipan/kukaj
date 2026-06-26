@@ -1,11 +1,9 @@
 package gaspapp.kukaj.source.steppelife
 
-import android.util.Log
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
-import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import gaspapp.kukaj.model.LiveStream
 import gaspapp.kukaj.source.DetailLoader
@@ -40,7 +38,7 @@ class SteppelifeDetailLoader(
                 this.loadPlayer(videoPlayerUrl, liveStream, responseListener, errorListener)
             },
             errorListener)
-        detailRequest.setRetryPolicy(DefaultRetryPolicy(6000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
+        detailRequest.setRetryPolicy(DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
         this.httpQueue.add(detailRequest)
     }
 
@@ -55,7 +53,7 @@ class SteppelifeDetailLoader(
                 this.liveStreamStore.updateItem(liveStream)
                 responseListener.onResponse(playerResponse)
             }, errorListener)
-        playerRequest.setRetryPolicy(DefaultRetryPolicy(6000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
+        playerRequest.setRetryPolicy(DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
         this.httpQueue.add(playerRequest)
     }
 

@@ -58,13 +58,15 @@ class LiveStreamCategoryStore(
                     Log.w("json", ex.toString())
                 }
             }, { error ->
-                Log.w("json", error)
-                if (error != null) {
-                    Log.w("json", error.networkResponse.statusCode.toString())
-                    Log.w("json", error.networkResponse.data.decodeToString())
+                Log.w("json", error.toString())
+                if (error.networkResponse != null) {
+                    Log.w("json", "LiveStreamCategoryStore.loadLatestCategoryData: STATUS ${error.networkResponse.statusCode}")
+                    if (error.networkResponse.data != null) {
+                        Log.w("json", "LiveStreamCategoryStore.loadLatestCategoryData: RESPONSE ${error.networkResponse.data.decodeToString()}")
+                    }
                 }
             })
-        request.setRetryPolicy(DefaultRetryPolicy(6000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
+        request.setRetryPolicy(DefaultRetryPolicy(15000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT))
         Services.getHttpQueue().add(request)
     }
 
