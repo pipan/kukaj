@@ -58,11 +58,11 @@ class LiveStreamCategoryStore(
                     Log.w("json", ex.toString())
                 }
             }, { error ->
-                Log.w("json", error.toString())
+                Log.w("httpError", error.toString())
                 if (error.networkResponse != null) {
-                    Log.w("json", "LiveStreamCategoryStore.loadLatestCategoryData: STATUS ${error.networkResponse.statusCode}")
+                    Log.w("httpError", "LiveStreamCategoryStore.loadLatestCategoryData: STATUS ${error.networkResponse.statusCode}")
                     if (error.networkResponse.data != null) {
-                        Log.w("json", "LiveStreamCategoryStore.loadLatestCategoryData: RESPONSE ${error.networkResponse.data.decodeToString()}")
+                        Log.w("httpError", "LiveStreamCategoryStore.loadLatestCategoryData: RESPONSE ${error.networkResponse.data.decodeToString()}")
                     }
                 }
             })
